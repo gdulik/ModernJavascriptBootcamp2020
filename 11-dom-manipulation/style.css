@@ -1,0 +1,35 @@
+h1 {
+	color: purple;
+	font-size: 60px;
+}
+
+h1:hover {
+	color: red;
+}
+
+#bear-photo {
+	width: 250px;
+}
+
+.special {
+	color: teal;
+	font-size: 30px;
+	border: 1px solid teal;
+}
+
+input[type="password"] {
+	height: 50px;
+	width: 100px;
+}
+
+.todo {
+	font-size: 30px;
+	color: olive;
+}
+
+.done {
+	text-decoration: line-through;
+	font-size: 20px;
+	opacity: 0.5;
+	color: gray;
+}
