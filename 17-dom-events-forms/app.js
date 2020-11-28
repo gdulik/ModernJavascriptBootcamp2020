@@ -12,8 +12,10 @@ const vegetableSelect = document.querySelector("#vegetable");
 
 const formData = {};
 for (let input of [creditCardInput, termsCheckbox, vegetableSelect]) {
-  input.addEventListener("input", (e) => {
-    formData[e.target.name] = e.target.value;
+  input.addEventListener("input", ({target}) => {
+    const {name, type, value, checked} = target;
+    formData[name] = type === 'checkbox' ? checked : value;
+    console.log(formData);
   });
 }
 
