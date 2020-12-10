@@ -1,4 +1,5 @@
 const express = require('express');
+const usersRepo = require('./repositories/users');
 
 const app = express();
 
@@ -14,8 +15,15 @@ app.get('/admin/signup', (req, res) => {
 	res.render('signup');
 });
 
-app.post('/admin/signup', (req, res) => {
-	console.log(req.body);
+app.post('/admin/signup', async (req, res) => {
+	const { email, password, passwordConfirmation } = req.body;
+	const existingUser = await usersRepo.getOneBy({ email });
+	if (existingUser) {
+		return res.send('Email in use');
+	}
+	if (password !== passwordConfirmation) {
+		return res.send('Passwords must match');
+	}
 	res.send('Posted');
 });
 
