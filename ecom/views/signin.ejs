@@ -6,14 +6,12 @@
   <title>Document</title>
 </head>
 <body>
-  <h1>Signup</h1>
-  <h3>Your id is <%= req.session.userId %> </h3>
+  <h1>Signin</h1>
   <div>
-    <form action="signup" method="POST">
+    <form action="signin" method="POST">
       <input type="email" placeholder="email" name="email">
       <input type="password" placeholder="password" name="password">
-      <input type="password" placeholder="password confirmation" name="passwordConfirmation">
-      <button>Sign Up</button>
+      <button>Sign In</button>
     </form>
   </div>
 </body>
