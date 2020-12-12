@@ -47,7 +47,8 @@ app.post('/admin/signin', async (req, res) => {
 	if (!user) {
 		return res.send('Email not in use');
 	}
-	if (password !== user.password) {
+	const validPassword = await usersRepo.comparePasswords(user.password, password);
+	if (!validPassword) {
 		return res.send('Invalid password');
 	}
 	req.session.userId = user.id;
