@@ -2,6 +2,7 @@ const express = require('express');
 const cookieSession = require('cookie-session');
 const authRouter = require('./routes/admin/auth');
 const path = require('path');
+const ejsMate = require('ejs-mate');
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(
 );
 app.use('/admin', authRouter);
 
+app.engine('ejs', ejsMate);
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
