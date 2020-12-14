@@ -3,8 +3,16 @@
 <h1>Signin</h1>
 <div>
   <form action="signin" method="POST">
-    <input type="email" placeholder="email" name="email">
+    <input type="text" placeholder="email" name="email">
+    <% try { %>
+      <%= errors.mapped()['email'].msg %>
+    <% } catch (err) { %> 
+    <% } %>
     <input type="password" placeholder="password" name="password">
+    <% try { %>
+      <%= errors.mapped()['password'].msg %>
+    <% } catch (err) { %> 
+    <% } %>
     <button>Sign In</button>
   </form>
 </div>
