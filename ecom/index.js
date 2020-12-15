@@ -1,27 +1,21 @@
 const express = require('express');
+const bodyParser = require('body-parser');
 const cookieSession = require('cookie-session');
 const authRouter = require('./routes/admin/auth');
-const path = require('path');
-const ejsMate = require('ejs-mate');
+const productsRouter = require('./routes/admin/products');
 
 const app = express();
 
-app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(
 	cookieSession({
-		keys: [ 'lkhas45sbj5hzpz32i4' ]
+		keys: [ 'lkasld235j' ]
 	})
 );
-app.use('/admin', authRouter);
-
-app.engine('ejs', ejsMate);
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-
-app.get('/', (req, res) => {
-	res.send('Home');
-});
+app.use(authRouter);
+app.use(productsRouter);
 
 app.listen(3000, () => {
-	console.log('Listening on port 3000');
+	console.log('Listening');
 });

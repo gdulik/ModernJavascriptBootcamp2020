@@ -22,9 +22,9 @@ module.exports = {
 		.isLength({ min: 4, max: 20 })
 		.withMessage('Must be between 4 and 20 characters')
 		.custom((passwordConfirmation, { req }) => {
-			if (req.body.password !== passwordConfirmation) {
+			if (passwordConfirmation !== req.body.password) {
 				throw new Error('Passwords must match');
-			}
+			} else return true;
 		}),
 	requireEmailExists: body('email')
 		.trim()
@@ -34,18 +34,17 @@ module.exports = {
 		.custom(async (email) => {
 			const user = await usersRepo.getOneBy({ email });
 			if (!user) {
-				throw new Error('Email not found');
+				throw new Error('Email not found!');
 			}
 		}),
 	requireValidPasswordForUser: body('password')
 		.trim()
 		.custom(async (password, { req }) => {
-			const user = await usersRepo.getOneBy({
-				email: req.body.email
-			});
+			const user = await usersRepo.getOneBy({ email: req.body.email });
 			if (!user) {
 				throw new Error('Invalid password');
 			}
+
 			const validPassword = await usersRepo.comparePasswords(
 				user.password,
 				password
