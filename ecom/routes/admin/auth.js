@@ -1,5 +1,4 @@
 const express = require('express');
-const { validationResult } = require('express-validator');
 
 const usersRepo = require('../../repositories/users');
 const signupTemplate = require('../../views/admin/auth/signup');
@@ -11,6 +10,7 @@ const {
 	requireEmailExists,
 	requireValidPasswordForUser
 } = require('./validators');
+const { handleErrors } = require('./middlewares');
 
 const router = express.Router();
 
@@ -21,24 +21,20 @@ router.get('/signup', (req, res) => {
 router.post(
 	'/signup',
 	[ requireEmail, requirePassword, requirePasswordConfirmation ],
+	handleErrors(signupTemplate),
 	async (req, res) => {
-		const errors = validationResult(req);
-		if (!errors.isEmpty()) {
-			return res.send(signupTemplate({ req, errors }));
-		}
-
-		const { email, password, passwordConfirmation } = req.body;
+		const { email, password } = req.body;
 		const user = await usersRepo.create({ email, password });
 
 		req.session.userId = user.id;
 
-		res.send('Account created!!!');
+		res.redirect('/admin/products');
 	}
 );
 
 router.get('/signout', (req, res) => {
 	req.session = null;
-	res.send('You are logged out');
+	res.redirect('/signin');
 });
 
 router.get('/signin', (req, res) => {
@@ -48,20 +44,14 @@ router.get('/signin', (req, res) => {
 router.post(
 	'/signin',
 	[ requireEmailExists, requireValidPasswordForUser ],
+	handleErrors(signinTemplate),
 	async (req, res) => {
-		const errors = validationResult(req);
-
-		if (!errors.isEmpty()) {
-			return res.send(signinTemplate({ errors }));
-		}
-
 		const { email } = req.body;
-
 		const user = await usersRepo.getOneBy({ email });
 
 		req.session.userId = user.id;
 
-		res.send('You are signed in!!!');
+		res.redirect('/admin/products');
 	}
 );
 
